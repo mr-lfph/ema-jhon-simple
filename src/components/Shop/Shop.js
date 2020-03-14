@@ -11,7 +11,7 @@ const Shop = () => {
             <h1>This is Shop</h1>
             <h3>{products.length}</h3>
          <ul>{
-             products.map(product=><li>{products.name}</li> )
+             products.map(product=><li>{product.name}</li> )
              }
            </ul>
         </div>
