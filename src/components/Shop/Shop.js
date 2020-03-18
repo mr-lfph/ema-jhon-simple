@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import fakeData from '../../fakeData';
-import './Shop.css';
+import './shop.css';
 import Product from '../Product/Product';
 import Cart from '../Cart/Cart';
 
@@ -20,9 +20,8 @@ const Shop = () => {
     return (
         <div className="shop-container">
             <div className="product-container">
-                <h3>{products.length}</h3>
                 {
-                    products.map(prod =><Product handleAddProduct={handleAddProduct} product={prod}></Product>)
+                    products.map(prod =><Product showAddToCart={true} handleAddProduct={handleAddProduct} product={prod}></Product>)
                 }
             </div>
             <div className="cart-container">
