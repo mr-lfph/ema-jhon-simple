@@ -1,0 +1,8 @@
+.btn-remove
+{
+    background-color:springgreen;
+    color:white;
+    border: solid 1px yellow;
+    border-radius: 5px;
+    padding: 5px 30px;
+}
