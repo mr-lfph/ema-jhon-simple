@@ -1,10 +1,13 @@
 import React from 'react';
-
 import './Cart.css';
+//import { useAuth } from '../Login/useAuth';
 
 const Cart = (props) => {
     const cart = props.cart;
-    //const total=cart.reduce((total,prd)=>total+prd.price,0);
+    // const auth=useAuth();
+   //  console.log(auth);
+     
+     //const total=cart.reduce((total,prd)=>total+prd.price,0);
     let total = 0;
     for (let i = 0; i < cart.length; i++) {
         const product = cart[i];
@@ -45,6 +48,7 @@ const Cart = (props) => {
             /* <Link to="/review">  
              <button className="btn-review-order">Review Order</button>
             </Link> */}
+            <p>{}</p>
  
         </div>
     );
