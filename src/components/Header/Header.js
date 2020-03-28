@@ -16,9 +16,13 @@ const Header = () => {
                 <a href="/review">Order Review </a>
                 <a href="/manage">Manage Inventory</a>
                 {
-                    auth.user ?
-                     <span style={{color:'yellow'}}> {auth.user.name}</span> :
-                    <a href="/Login"> SignIn</a>
+                    auth.user &&
+                     <span style={{color:'yellow'}}> WelCome {auth.user.name}</span> 
+                   
+                }
+                {
+                auth.user? <a href="/Login"> SignOut</a>
+                : <a href="/Login"> SignIn</a>
                 }
             </nav>
         </div>

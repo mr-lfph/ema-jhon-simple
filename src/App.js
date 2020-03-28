@@ -9,7 +9,8 @@ import NotFound from './components/NotFound/NotFound';
 import ProductDetail from './components/ProductDetail/ProductDetail';
 import Login from './components/Login/Login';
 import Manage from './components/Manage/Manage';
-import { AuthContextProvider } from './components/Login/useAuth';
+import { AuthContextProvider, PrivatrRoute } from './components/Login/useAuth';
+import Shipment from './components/Shipment/Shipment';
 
 function App(props) {
   return (
@@ -21,7 +22,7 @@ function App(props) {
             <Route exact path="/shop">
               <Shop></Shop>
             </Route>
-            <Route path="/">
+            <Route exact path="/">
               <Shop></Shop>
             </Route>
             <Route path="/review">
@@ -36,6 +37,9 @@ function App(props) {
             <Route path="/login">
               <Login></Login>
             </Route>
+            <PrivatrRoute path="/shipment">
+              <Shipment></Shipment>
+            </PrivatrRoute>
             <Route path="*">
               <NotFound></NotFound>
             </Route>
