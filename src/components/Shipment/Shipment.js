@@ -1,76 +1,116 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import './Shipment.css'
 import { useAuth } from '../Login/useAuth';
-import { getDatabaseCart, processOrder } from '../../utilities/databaseManager';
+import { getDatabaseCart, clearLocalShoppingCart } from '../../utilities/databaseManager';
+import { loadStripe } from '@stripe/stripe-js';
+import CheckoutForm from './CheckoutForm/CheckoutForm';
+import { Elements } from '@stripe/react-stripe-js';
+
 //npm install react-hook-form , if not install thwn run :  npm cache clean --force
 
 const Shipment = () => {
     const { register, handleSubmit, errors } = useForm();
-     const auth = useAuth();
-     
-     const onSubmit = data => { 
-      //  console.log(data) 
-    //move this after payment
-    const savedCart=getDatabaseCart();
-    const orderDetails={email:auth.user.email,cart:savedCart};
-    fetch('http://localhost:4200/placeOrder',{
-        method:'POST',
-        headers:{
-            'Content-Type': 'application/json'
-        },
-        body:JSON.stringify(orderDetails)
-    })
-    .then(res=>res.json())
-    .then(data=>{
-               
-        alert('Successfully Placed Order with order '+ data._id);
-        processOrder();
-    })
+    const [shipInfo, setShipInfo] = useState(null);
+    const [orderId, setOrderId] = useState(null);
+    const auth = useAuth();
+    const stripePromise = loadStripe('pk_test_FQAOmIOOqqtGHWBQ1YmOcSmK00BUWflwA2');
+    
+    const onSubmit = data => {
+        setShipInfo(data);
     }
+    const handlePlaceOrder=(payment)=>
+    {
+        const savedCart = getDatabaseCart();
+        const orderDetails = {
+            email: auth.user.email,
+            cart: savedCart,
+            shipment: shipInfo,
+            payment:payment
+        };
+        fetch('http://localhost:4200/placeOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderDetails)
+        })
+            .then(res => res.json())
+            .then(order => {
+                console.log(order);
+                
+                console.log('from db',order._id);
+                
+                setOrderId(order._id);
+                clearLocalShoppingCart();
+            })
+    }
+ 
     return (
-        <form className="ship-form" onSubmit={handleSubmit(onSubmit)}>
-            <input name="name"
-                defaultValue={auth.user.name}
-                ref={register({ required: true })}
-                placeholder="Your Name" />
-            {
-                errors.name && <span className="error">name is required</span>
-            }
-            <input name="email"
-                defaultValue={auth.user.email}
-                ref={register({ required: true })}
-                placeholder="Your Email" />
-            {
-                errors.email && <span className="error">Email is required</span>
-            }
-            <input name="AddressLine1"
-                ref={register({ required: true })}
-                placeholder="Address Line 1" />
-            {
-                errors.AddressLine1 && <span className="error">Address is required</span>
-            }
-            <input name="AddressLine2"
-                ref={register()}
-                placeholder="Address Line 2" />
+        <div className="container">
+            <div className="row">
+                <div style={{ display: shipInfo && 'none' }} className="col-md-6">
+                    <h3>Shipment Information</h3>
+                    <form className="ship-form" onSubmit={handleSubmit(onSubmit)}>
+                        <input name="name"
+                            defaultValue={auth.user.name}
+                            ref={register({ required: true })}
+                            placeholder="Your Name" />
+                        {
+                            errors.name && <span className="error">name is required</span>
+                        }
+                        <input name="email"
+                            defaultValue={auth.user.email}
+                            ref={register({ required: true })}
+                            placeholder="Your Email" />
+                        {
+                            errors.email && <span className="error">Email is required</span>
+                        }
+                        <input name="AddressLine1"
+                            ref={register({ required: true })}
+                            placeholder="Address Line 1" />
+                        {
+                            errors.AddressLine1 && <span className="error">Address is required</span>
+                        }
+                        <input name="AddressLine2"
+                            ref={register()}
+                            placeholder="Address Line 2" />
 
-            <input name="city"
-                ref={register({ required: true })}
-                placeholder="City" />
-            {errors.city && <span className="error">City is required</span>}
+                        <input name="city"
+                            ref={register({ required: true })}
+                            placeholder="City" />
+                        {errors.city && <span className="error">City is required</span>}
 
-            <input name="country"
-                ref={register({ required: true })}
-                placeholder="Country" />
-            {errors.country && <span className="error">Country is required</span>}
+                        <input name="country"
+                            ref={register({ required: true })}
+                            placeholder="Country" />
+                        {errors.country && <span className="error">Country is required</span>}
 
-            <input name="zipcode"
-                ref={register({ required: true })}
-                placeholder="Zip Code" />
-            {errors.zipcode && <span className="error">Zip Code is required</span>}
+                        <input name="zipcode"
+                            ref={register({ required: true })}
+                            placeholder="Zip Code" />
+                        {errors.zipcode && <span className="error">Zip Code is required</span>}
 
-            <input type="submit" />
-        </form>
+                        <input type="submit"/>
+                    </form>
+                </div>
+                <div style={{ marginTop:'100px', display: shipInfo ? 'block' : 'none' }} className="col-md-6">
+                    <h3>Payment Information</h3>
+
+                    <Elements stripe={stripePromise}>
+                        <CheckoutForm handlePlaceOrder={handlePlaceOrder} ></CheckoutForm>
+                    </Elements>
+                    <br/>
+                    {
+                        orderId && <div>
+                            <h3>Thank you for Shoping with us </h3>
+                            <p>Your order id is:{orderId} </p>
+                        </div>
+  
+                    }
+                </div>
+            </div>
+        </div>
     )
 }
 
