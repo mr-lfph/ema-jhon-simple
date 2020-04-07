@@ -8,7 +8,7 @@ import Review from './components/Review/Review';
 import NotFound from './components/NotFound/NotFound';
 import ProductDetail from './components/ProductDetail/ProductDetail';
 import Login from './components/Login/Login';
-import Manage from './components/Manage/Manage';
+import Inventory from './components/Inventory/Inventory';
 import { AuthContextProvider, PrivatrRoute } from './components/Login/useAuth';
 import Shipment from './components/Shipment/Shipment';
 
@@ -28,8 +28,8 @@ function App(props) {
             <Route path="/review">
               <Review></Review>
             </Route>
-            <Route path="/manage">
-              <Manage></Manage>
+            <Route path="/inventory">
+              <Inventory></Inventory>
             </Route>
             <Route path="/product/:productKey">
               <ProductDetail></ProductDetail>
