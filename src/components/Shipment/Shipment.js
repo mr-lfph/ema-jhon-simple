@@ -28,7 +28,7 @@ const Shipment = () => {
             shipment: shipInfo,
             payment:payment
         };
-        fetch('http://localhost:4200/placeOrder', {
+        fetch('https://mr-ema-jhon-simple.herokuapp.com/placeOrder', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

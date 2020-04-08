@@ -16,7 +16,7 @@ const Shop = () => {
     const [cart, setCart] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:4200/products')
+        fetch('https://mr-ema-jhon-simple.herokuapp.com/products')
             .then(res => res.json())
             .then(data => {
                 // console.log('Data from DataBase',data);
