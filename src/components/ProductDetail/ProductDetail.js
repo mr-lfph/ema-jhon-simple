@@ -9,7 +9,7 @@ const ProductDetail = () => {
     //const product = fakeData.find(pd => pd.key = productKey);
     const [product,setProduct]=useState(null);
     useEffect(()=>{
-        fetch('http://https://mr-ema-jhon-simple.herokuapp.com/product/'+productKey)
+        fetch('https://mr-ema-jhon-simple.herokuapp.com/product/'+productKey)
         .then(res=>res.json())
         .then(data=>{
             setProduct(data);
