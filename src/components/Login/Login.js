@@ -1,11 +1,13 @@
 import React from 'react';
 import Auth from './useAuth';
 
-const Login = () => {
+const Login = (async) => {
    const auth = Auth();
    const handleSignIn=()=>{
        auth.signInWithGoogle().then(res=>{
+         
            window.location.pathname='/review';
+           
        })
    }
    const handleSignOut=()=>{
